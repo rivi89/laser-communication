@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Wheel Measure</title>
+<!-- normalize-->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.css">
+	<link rel="stylesheet" href="style.css">
+
+<script>
+
+// Function to download data to a file
+function download(filename, type) {
+	var jsonObj = {};
+	var data = {};
+	data['FrontLeft'] = document.getElementById("FrontLeft").innerHTML;
+	data['RearLeft'] = document.getElementById("RearLeft").innerHTML;
+	data['RearRight'] = document.getElementById("RearRight").innerHTML;
+	data['FrontRight'] = document.getElementById("FrontRight").innerHTML;
+
+	jsonObj['MEASURE'] = data;
+/*
+  var data="MEASURE:"+"\n";
+  data= data + "FrontLeft: " + document.getElementById("FrontLeft").innerHTML +"\n";
+  data= data + "RearLeft: " + document.getElementById("RearLeft").innerHTML +"\n";
+  data= data + "RearRight: " + document.getElementById("RearRight").innerHTML +"\n";
+  data= data + "FrontRight: " + document.getElementById("FrontRight").innerHTML +"\n";
+*/
+    var file = new Blob([JSON.stringify(jsonObj)], {type: type});
+    if (window.navigator.msSaveOrOpenBlob) // IE10+
+        window.navigator.msSaveOrOpenBlob(file, filename);
+    else { // Others
+        var a = document.createElement("a"),
+                url = URL.createObjectURL(file);
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function() {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);  
+        }, 0); 
+    }
+}
+
+    append = function (value,wheel) {
+
+    document.getElementById(wheel).innerHTML = value ;
+
+
+	}
+
+    window.onload = function () {
+
+      var echo_service = new WebSocket('ws://localhost:8001');
+      echo_service.onmessage = function (msg) {
+	  var obj;
+	  try
+	  {
+		obj = JSON.parse(msg.data);
+		append(obj.FrontLeft,"FrontLeft");
+		append(obj.RearLeft,"RearLeft");		
+		append(obj.RearRight,"RearRight");
+		append(obj.FrontRight,"FrontRight");
+
+	  }
+	  catch (e)
+	  {
+	  //alert (msg.data);
+	  }
+	  
+        //append(msg.data);
+      }
+      echo_service.onopen = function () {
+        append("connessione effettuata")
+        echo_service.send("hello!");
+      }
+      echo_service.onclose = function () {
+        append("connessione chiusa");
+      }
+      echo_service.onerror = function () {
+        append("errore nella connessione");
+      }
+
+    }
+  </script>
+
+</head>
+
+<body>
+<!-- header-->
+
+	<header class="header clearfix">
+
+		<ul class="header__menu animate">
+			<li class="header__menu__item"><a href="index.html">Home</a></li>
+			<li class="header__menu__item"><a href="settings.html">Settings</a></li>
+			<li class="header__menu__item"><a href="liveMeasure.html">Live Measure</a></li>
+
+		</ul>
+	</header>
+
+	<section class="box_logo">
+		<div class="logo">
+      		<img src="bosch_logo_w250.png" alt="">
+    	</div>
+	</section>
+
+	<section class="coverbis">
+
+		<div class="coverbis__caption">				
+				<div class="coverbis__caption__copy">
+					<div class="coverbis__caption__copy__filter">
+
+  						<div id="form">
+						<textarea class="textws" id="RearLeft">RearLeft</textarea>
+						<textarea class="textws" id="FrontLeft">FrontLeft</textarea><br>
+						<textarea class="textws" id="RearRight">RearRight</textarea>
+						<textarea class="textws" id="FrontRight">FrontRight</textarea><br>
+    					<button type="button" class="button"onclick= "window.location.reload();">
+          				<a > <strong>START</strong> </a>
+          				</button>       
+        				<button type="button" class="button"onclick= "echo_service.close();">
+          				<a > <strong>STOP</strong> </a>
+				        </button>
+				        <button type="button" class="button" onclick= "download('WheelMeasure.json', 'text/plain')">
+				        <a > <strong>SAVE</strong> </a>
+				        </button>           
+
+						</div>
+
+					</div>
+				</div>
+		</div>
+	</section>
+
+
+		
+
+
+
+<!-- jquery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+    <div class="page__header">
+      <div class="supergraphic bar"></div>
+    </div>
+
+    <div class="page__footer">
+      <span class="copyright">
+        &copy; 2018 Robert Bosch GmbH
+      </span>
+
+      <div class="supergraphic bar"></div>
+    </div>
+
+</body>
+</html>

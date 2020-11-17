@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Settings</title>
+<!-- normalize-->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.css">
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<!-- jquery
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>-->
+    <div class="page__header">
+      <div class="supergraphic bar"></div>
+    </div>	
+
+<!-- header-->
+	<header class="header clearfix">
+		<ul class="header__menu animate">
+			<li class="header__menu__item"><a href="index.html">Home</a></li>
+			<li class="header__menu__item"><a href="wheelMeasureAuto.html">Wheel Measure</a></li>
+			<li class="header__menu__item"><a href="liveMeasure.html">Live Measure</a></li>
+		</ul>
+	</header>
+    <section class="box_logo">
+		<div class="logo">
+      		<img src="bosch_logo_w250.png" alt="">
+    	</div>
+	</section>
+
+	<section class="cards1 clearfix">
+		<form method="post" action="esegui.php">
+  			<h1>Settings</h1><br>
+
+  	<!-- SELECTBOX -->
+  			Language
+  			<select name="language">
+  			<option value="I">Italian</option>
+  			<option value="E">English </option>
+  			</select><br><br><br>
+
+  	<!-- RADIO -->
+ 			 Device status
+  			<input type="radio" name="status" value="ON">ON
+  			<input type="radio" name="status" value="OFF"> OFF<br><br><br>
+
+			<h3>Measuring Settings</h3>
+  	<!-- SELECTBOX -->
+  			References
+  			<select name="References">
+  			<option value="f">Front</option>
+  			<option value="b">Back </option>
+  			</select><br><br><br>
+
+ 	<!-- CASELLE DI TESTO -->
+  			Interval (seconds)
+  			<input type="number" name="interval"min="1" max="10" step="1"><br><br><br>
+
+
+  	<!-- SUBMIT -->
+  			<input type="submit" name="Save" value="Save">
+
+		</form>
+	</section>
+
+
+    <div class="page__footer">
+      <span class="copyright">
+        &copy; 2018 Robert Bosch GmbH
+      </span>
+    <div class="supergraphic bar"></div>
+
+</body>
+</html>
